@@ -1,33 +1,12 @@
 # Snappler Rails Best Practices
 
-Este documento pretende convertirse en:
+Este documento pretende convertirse en un documento **colaborativo** donde:
 
-1. Una guía colaborativa de mejores prácticas para desarrollar aplicaciones Rails en _Snappler_
-2. Una guía de estilos para ayudarnos a escribir código de una forma consistente.
+1. Definamos pautas para desarrollar aplicaciones Rails en _Snappler_
+2. Acordemos una guía de estilos para escribir código de forma consistente
+3. Identifiquemos y describamos soluciones a _malos olores_ comunes en nuestro código
 
 -----------------------------
-
-# Documentación
-
-
-El archivo **README.md** debe contener la información necesaria para que
-un desarrollador nuevo pueda comenzar a ser productivo cuanto antes.
-
-Tiene que estar escrito en [formato markdown de Github](https://guides.github.com/features/mastering-markdown/)
-
-Por lo menos tiene que contar con la siguiente información.
-
-1. En qué consiste la aplicación.
-2. Pasos a seguir para instalar y usar la aplicación.
-3. Estructura de la aplicación.
-4. Otras explicaciones que puedan ser de utilidad al nuevo desarrollador.
-
-Ejemplo de un readme [aquí](EJEMPLO_README.md).
-
-[Aspectos técnicos](https://jacobian.org/writing/technical-style/) de una buena documentación.
-
-
-------------------------------
 
 # Sobre la guía de estilos
 
@@ -48,22 +27,82 @@ Particularmente, no destruyas compatibilidad de tu código sólo para adaptarte 
 
 -------------------------------
 
-# Tamaño de la aplicación
+# Documentación
 
-Rails provée muchas librerías que no siempre necesitamos.
+El archivo **README.md** debe contener la información necesaria para que
+un desarrollador nuevo pueda comenzar a ser productivo cuanto antes.
 
-Es posible hacer más liviana una aplicación Rails identificando estos elementos.
+Tiene que estar escrito en [formato markdown de Github](https://guides.github.com/features/mastering-markdown/)
+
+Por lo menos tiene que contar con la siguiente información.
+
+1. En qué consiste la aplicación.
+2. Pasos a seguir para instalar y usar la aplicación.
+3. Estructura de la aplicación.
+4. Otras explicaciones que puedan ser de utilidad al nuevo desarrollador.
+
+Ejemplo de un readme [aquí](EJEMPLO_README.md).
+
+[Aspectos técnicos](https://jacobian.org/writing/technical-style/) de una buena documentación.
+
+
+------------------------------
+
+
+# Tamaño y carga de la aplicación
+
+## application.rb
+
+Rails provée muchos módulos que no siempre necesitamos.
+
+Si miramos el archivo _application.rb_, notaremos la linea `require 'rails/all'`
+
+Si vamos al [codigo fuente](https://github.com/rails/rails/blob/master/railties/lib/rails/all.rb),
+encontraremos que esa linea se puede reemplazar por:
+
+``` ruby
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_view/railtie'
+require 'action_mailer/railtie'
+require 'active_job/railtie'
+require 'action_cable/engine'
+require 'rails/test_unit/railtie'
+require 'sprockets/railtie'
+```
+
+Luego de reemplazar la linea, es posible hacer más liviana una aplicación Rails identificando los módulos que no se usarán y comentándolos:
+
+Por ejemplo, si se que mi aplicación no mandará mails y no usaré websockets ni trabajos asincrónicos, me quedará:
+
+``` ruby
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_view/railtie'
+#require 'action_mailer/railtie'
+#require 'active_job/railtie'
+#require 'action_cable/engine'
+require 'rails/test_unit/railtie'
+require 'sprockets/railtie'
+```
+
+Tener en cuenta que al hacerlo, también habrá que comentar las configuraciones en los environments según correspondan.
 
 
 ## Rails API
 
-Si vas a crear una aplicación que sólo va a servir como API, crearla con la opción `--api`
+Muchas veces no necesitamos toda las funcionalidades que nos provée una aplicación Rails estandar, y sólo queremos definir una API.
+
+Las aplicaciones de tipo API se crean con la opción `--api`.
 
 ```
 rails new my_app --api
 ```
 
+
 ## Gemfile
+
+**Mal olor:** demasiadas gemas.
 
 Revisar que se estén usando todas las gemas y eliminar las que no se usen.
 
@@ -71,16 +110,13 @@ Puntualmente es muy común ver definidas en los proyectos las gemas **byebug** y
 
 En estos casos, eliminar aquella que no se use.
 
-## Railties
+En general es buena idea tener la menor cantidad de dependencias posibles.
 
-Si miramos el archivo _application.rb_, notaremos la linea `require 'rails/all'`
+Lectura interesante: [Kill your dependencies](http://www.mikeperham.com/2016/02/09/kill-your-dependencies/)
 
-# Prácticas en Rails
+------------------------------
 
-A continuación listaremos algunos **malos olores** comunes en aplicaciones Rails,
-y cómo se pueden evitar.
-
-
+# Rutas
 
 ## Rutas RESTful
 
@@ -192,6 +228,11 @@ Se debe tener en cuenta que realizar estos cambios en general implica cambiar c�
 
 Pero al mismo tiempo nos ayuda a tener un código con menos duplicación y mayor fácilidad de mantenimiento.
 
+------------------------------
+
+# Modelos
+
+TODO: explicacion modelos y qué va en los modelos.
 
 ## Scopes
 
@@ -238,6 +279,21 @@ Y se cumple la [ley de demeter](https://en.wikipedia.org/wiki/Law_of_Demeter#In_
 
 
 
+## Abuso de self
+Es mejor no usar _self_ innecesariamente. Esto:
+``` ruby
+  self.flight_type.eql?('arrival') ? self.date_in : self.date_out
+```
+
+Debería ser:
+``` ruby
+  flight_type.eql?('arrival') ? date_in : date_out
+```
+
+------------------------------
+
+# Helpers y Views
+
 ## Usar View Helper Methods
 
 Rails provee varios métodos auxiliares para poder escribir en las vistas de forma segura.
@@ -277,17 +333,9 @@ end
 Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-call-html_safe-in-a-rails-template/)
 
 
+------------------------------
 
-## Abuso de self
-Es mejor no usar _self_ innecesariamente. Esto:
-``` ruby
-  self.flight_type.eql?('arrival') ? self.date_in : self.date_out
-```
-
-Debería ser:
-``` ruby
-  flight_type.eql?('arrival') ? date_in : date_out
-```
+# Malos olores en ruby
 
 ## Asignaciones dentro de expresiones en if y case
 
@@ -395,7 +443,7 @@ Se siente más natural y es más fácil de leer y entender.
 
 En este caso, podemos reemplazar _blank?_ por _present?_, e invertir las expresiones:
 
-``` html
+``` erb
 <% if @book.comments.present? %>
   <div class="list-group-item">
     <%= @book.comments %>
