@@ -12,9 +12,9 @@ Este documento pretende convertirse en un documento **colaborativo** donde:
 
 El código es leido mucho más frecuentemente de lo que es escrito.
 
-Con este documento se pretende mejorar la legibilidad del código.
+Una guía de estilos es acerca de consistencia y prolijidad.
 
-Una guía de estilos es acerca de consistencia, y ser consistentes y prolijos nos permite escribir código fácil de mantener y de compartir entre nosotros.
+Ser consistentes y prolijos nos permite escribir código fácil de mantener y de compartir entre nosotros.
 
 Nos basaremos en la [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
 
