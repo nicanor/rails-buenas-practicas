@@ -233,7 +233,10 @@ Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-cal
 ## Gemfile
 
 Revisar que se estén usando todas las gemas y eliminar las que no se usen.
-Es muy común ver definidas en los proyectos las gemas **byebug** y **pry**, o las gemas **kaminari** y **will_paginate**.
+
+Puntualmente es muy común ver definidas en los proyectos las gemas **byebug** y **pry**, y las gemas **kaminari** y **will_paginate**, pese a que cumplan la misma función.
+
+En estos casos, eliminar aquella que no se use.
 
 
 ## Abuso de self
@@ -251,7 +254,6 @@ Debería ser:
 
 Salvo que explicitamente se utilize un _return_, los ifs y los case retornan siempre la última expresión.
 
-**Antes:**
 ``` ruby
 def something
   hour = nil
@@ -274,7 +276,6 @@ end
 
 En este caso podemos obviar completamente la variable _hour_:
 
-**Antes:**
 ``` ruby
 def something
   if type.eql?('awesome')
@@ -297,7 +298,6 @@ Como un plus, en este caso particular podemos evitar el sobreanidamiento duplica
 
 Y se logra **discutiblemente** un código más prolijo y fácil de leer y mantener.
 
-**Después:**
 ``` ruby
 def something
   if type.eql?('awesome') && eta_lt
