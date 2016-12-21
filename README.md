@@ -29,7 +29,7 @@ Ejemplo de un readme [aquí](EJEMPLO_README.md).
 
 ------------------------------
 
-# Guía de estilos
+# Sobre la guía de estilos
 
 El código es leido mucho más frecuentemente de lo que es escrito.
 
@@ -48,10 +48,38 @@ Particularmente, no destruyas compatibilidad de tu código sólo para adaptarte 
 
 -------------------------------
 
+# Tamaño de la aplicación
+
+Rails provée muchas librerías que no siempre necesitamos.
+
+Es posible hacer más liviana una aplicación Rails identificando estos elementos.
+
+
+## Rails API
+
+Si vas a crear una aplicación que sólo va a servir como API, crearla con la opción `--api`
+
+```
+rails new my_app --api
+```
+
+## Gemfile
+
+Revisar que se estén usando todas las gemas y eliminar las que no se usen.
+
+Puntualmente es muy común ver definidas en los proyectos las gemas **byebug** y **pry**, y las gemas **kaminari** y **will_paginate**, pese a que cumplan la misma función.
+
+En estos casos, eliminar aquella que no se use.
+
+## Railties
+
+Si miramos el archivo _application.rb_, notaremos la linea `require 'rails/all'`
+
 # Prácticas en Rails
 
 A continuación listaremos algunos **malos olores** comunes en aplicaciones Rails,
 y cómo se pueden evitar.
+
 
 
 ## Rutas RESTful
@@ -62,7 +90,9 @@ Una ruta RESTful se logra a través de los helpers **resources** o **resource**,
 
 Además de estas rutas, Rails provee soporte para agregar rutas arbitrarias
 
-Si ves en tu código varias rutas definidas de la siguiente manera, estás en presencia de un mal olor:
+Si ves en tu código varias rutas definidas de forma excesivamente verbosa estás en presencia de un mal olor.
+
+Ejemplo:
 
 ``` ruby
 post 'books/send_report', to: 'books#send_report', as: :send_report
@@ -98,10 +128,12 @@ end
 
 ## Route concerns
 
-Es común en aplicaciones rails tener archivos de rutas que repitan patrones para diferentes recursos:
+Es común en aplicaciones rails tener archivos de rutas que repitan patrones para diferentes recursos.
+
+Tener estas estructuras repetidas en un mal olor. Ejemplo:
 
 ``` ruby
-get 'pages/all_images', to: 'pages#all_images', as: :pages_order_images
+get 'pages/all_images', to: 'pages#all_images', as: :pages_show_images
 post 'pages/:id/upload_image', to: 'pages#upload_image', as: :page_upload_image
 delete 'pages/:id/delete_image', to: 'pages#delete_image', as: :page_delete_image
 resources :pages
@@ -113,19 +145,20 @@ get 'books/list', to: 'books#list', as: :books_list
 resources :books
 
 get 'tags/list', to: 'tags#list', as: :tags_list
-get 'tags/all_images', to: 'tags#all_images', as: :tags_order_images
+get 'tags/all_images', to: 'tags#all_images', as: :tags_show_images
 post 'tags/:id/upload_image', to: 'tags#upload_image', as: :tag_upload_image
 delete 'tags/:id/delete_image', to: 'tags#delete_image', as: :tag_delete_image
 resources :tags
 
 get 'gifts/list', to: 'gifts#list', as: :airports_list
-get 'gifts/all_images', to: 'gifts#all_images', as: :gifts_order_images
+get 'gifts/all_images', to: 'gifts#all_images', as: :gifts_show_images
 post 'gifts/:id/upload_image', to: 'gifts#upload_image', as: :gift_upload_image
 delete 'gifts/:id/delete_image', to: 'gifts#delete_image', as: :gift_delete_image
 resources :gifts
 ```
 
-En estos casos es una buena idea usar [concerns](http://guides.rubyonrails.org/routing.html#routing-concerns) para limpiar las partes repetidas.
+En estos casos, además de aplicar **member** y **collection** es una buena idea usar [concerns](http://guides.rubyonrails.org/routing.html#routing-concerns) para limpiar las partes repetidas.
+
 
 ``` ruby
 concern :listable do
@@ -133,7 +166,7 @@ concern :listable do
 end
 
 concern :imageable do
-  get :order_images, on: :collection
+  get :show_images, on: :collection
   member do
     post :upload_image
     delete :delete_image
@@ -146,6 +179,18 @@ resources :gifts   , concerns: [:listable, :imageable]
 resources :pages   , concerns: [:imageable]
 resources :tags    , concerns: [:listable, :imageable]
 ```
+
+Este caso particular podemos aplicar nuevamente la idea de rutas RESTful.
+
+``` ruby
+concern :imageable do
+  resources :images, only: [:index, :update, :delete]
+end
+```
+
+Se debe tener en cuenta que realizar estos cambios en general implica cambiar código en varios lugares, como vistas y controladores.
+
+Pero al mismo tiempo nos ayuda a tener un código con menos duplicación y mayor fácilidad de mantenimiento.
 
 
 ## Scopes
@@ -191,6 +236,8 @@ De esta forma un modelo no necesita saber nada sobre la estructura interna de ot
 
 Y se cumple la [ley de demeter](https://en.wikipedia.org/wiki/Law_of_Demeter#In_object-oriented_programming)
 
+
+
 ## Usar View Helper Methods
 
 Rails provee varios métodos auxiliares para poder escribir en las vistas de forma segura.
@@ -229,14 +276,6 @@ end
 
 Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-call-html_safe-in-a-rails-template/)
 
-
-## Gemfile
-
-Revisar que se estén usando todas las gemas y eliminar las que no se usen.
-
-Puntualmente es muy común ver definidas en los proyectos las gemas **byebug** y **pry**, y las gemas **kaminari** y **will_paginate**, pese a que cumplan la misma función.
-
-En estos casos, eliminar aquella que no se use.
 
 
 ## Abuso de self
@@ -327,7 +366,7 @@ order ||= 'id'
 En general se puede usar el método rails _blank?_ en lugar de preguntar por ambos _nil?_ y _empty?_.
 
 **Antes:**
-``` html
+``` erb
 <% if @book.comments.nil? || @book.comments.empty? %>
   <p class="help-block">The book hasn't comments.<p>
 <% else %>
@@ -338,7 +377,7 @@ En general se puede usar el método rails _blank?_ en lugar de preguntar por amb
 ```
 
 **Reemplazando por blank?:**
-``` html
+``` erb
 <% if @book.comments.blank? %>
   <p class="help-block">The book hasn't comments.<p>
 <% else %>
