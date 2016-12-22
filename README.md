@@ -410,123 +410,106 @@ end
 
 Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-call-html_safe-in-a-rails-template/)
 
-
 ------------------------------
 
-# Malos olores en ruby
+# Idiomas Ruby
 
-## Asignaciones dentro de expresiones en if y case
-
-Salvo que explicitamente se utilize un _return_, los ifs y los case retornan siempre la última expresión.
+#### Usar notación **&**
 
 ``` ruby
-def something
-  hour = nil
-  if type.eql?('awesome')
-    if eta_lt
-      hour = "#{eta_lt} LT"
-    elsif eta_utc
-      hour = "#{eta_utc} UTC"
-    end
-  else
-    if etd_lt
-      hour = "#{etd_lt} LT"
-    else
-      hour = "#{etd_utc} UTC"
-    end
-  end
-  hour
+# En lugar de:
+['gato', 'perro', 'loro'].map { |x| x.upcase }
+# Usar:
+['gato', 'perro', 'loro'].map(&:upcase)
+```
+
+Explicación [aquí](http://blog.thoughtfolder.com/2008-02-25-a-detailed-explanation-of-ruby-s-symbol-to-proc.html)
+
+#### Usar funciones específicas en colecciones
+
+``` ruby
+# En lugar de:
+[1, 2, 3].map { |x| [x, x+1] }.flatten
+# Usar:
+[1, 2, 3].flat_map { |x| [x, x+1] }
+
+# En lugar de:
+[1, 2, 3].select { |x| x > 2 }.count
+# Usar:
+[1, 2, 3].count { |x| x > 2 }
+
+# En lugar de:
+[1, 2, 3].shuffle.first
+# Usar:
+[1, 2, 3].sample
+
+# En lugar de:
+(1..10).select { |num| num % 3 == 0 }.first
+# Usar:
+(1..10).find { |num| num % 3 == 0 }
+```
+
+
+#### Pensar en Ruby: Método retorna algo vs es algo
+
+``` ruby
+def word_count
+  return words.size
+end
+
+def word_count
+  words.size
 end
 ```
 
-En este caso podemos obviar completamente la variable _hour_:
+#### Usar métodos funcionales para arreglos.
 
 ``` ruby
-def something
-  if type.eql?('awesome')
-    if eta_lt
-      "#{eta_lt} LT"
-    elsif eta_utc
-      "#{eta_utc} UTC"
-    end
-  else
-    if etd_lt
-      "#{etd_lt} LT"
-    else
-      "#{etd_utc} UTC"
-    end
+def keep_evens
+  result_array = []
+  for num in my_array
+    result_array << num if num % 2 == 0
   end
+  return result_array
+end
+
+def keep_evens
+  my_array.select {|item| item.even?}
 end
 ```
 
-Como un plus, en este caso particular podemos evitar el sobreanidamiento duplicando una de las condiciones.
+#### Cuando usar keywords arguments
 
-Y se logra **discutiblemente** un código más prolijo y fácil de leer y mantener.
+Si una función tiene muchos parámetros, es mejor definirla con keywords arguments.
+
+De esta forma, la función se vuelve mucho más expresiva y no es necesario recordar el orden de los parámetros.
 
 ``` ruby
-def something
-  if type.eql?('awesome') && eta_lt
-    "#{eta_lt} LT"
-  elsif type.eql?('awesome') && eta_utc
-    "#{eta_utc} UTC"
-  elsif etd_lt
-    "#{etd_lt} LT"
-  else
-    "#{etd_utc} UTC"
-  end
+package_item = new_item(query[:site_id], query[:initial_date], query[:initial_date])
+
+package_item = new_item(
+  location_id: query[:site_id],
+  date_in:     query[:date_in],
+  date_out:    query[:date_out]
+)
+```
+
+#### El orden de las condiciones de los if es importante
+
+Los if son más fácil de leer cuando comienzan con la condición positiva.
+
+``` ruby
+if !valid?
+  "There is an error"
+else
+  "All ok"
+end
+
+if valid?
+  "All ok"
+else
+  "There is an error"
 end
 ```
 
-## Or/Equals
-Usar los operadores [or_equals o similares ](http://www.rubyinside.com/what-rubys-double-pipe-or-equals-really-does-5488.html) cuando sea posible.
-
-``` ruby
-order = order || 'id'
-# Se convierte en:
-order ||= 'id'
-```
-
-
-## Blank?
-
-En general se puede usar el método rails _blank?_ en lugar de preguntar por ambos _nil?_ y _empty?_.
-
-**Antes:**
-``` erb
-<% if @book.comments.nil? || @book.comments.empty? %>
-  <p class="help-block">The book hasn't comments.<p>
-<% else %>
-  <div class="list-group-item">
-    <%= @book.comments %>
-  </div>
-<% end %>
-```
-
-**Reemplazando por blank?:**
-``` erb
-<% if @book.comments.blank? %>
-  <p class="help-block">The book hasn't comments.<p>
-<% else %>
-  <div class="list-group-item">
-    <%= @book.comments %>
-  </div>
-<% end %>
-```
-
-**Invirtiendo _if/else_:**
-
-Además, en un _if/else_ es mejor empezar con la condición positiva.
-
-Se siente más natural y es más fácil de leer y entender.
-
-En este caso, podemos reemplazar _blank?_ por _present?_, e invertir las expresiones:
-
-``` erb
-<% if @book.comments.present? %>
-  <div class="list-group-item">
-    <%= @book.comments %>
-  </div>
-<% else %>
-  <p class="help-block">The book hasn't comments.<p>
-<% end %>
-```
+También es mejor no usar _unless_ con _else_.
