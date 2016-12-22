@@ -464,6 +464,10 @@ end
 
 #### Usar métodos funcionales para arreglos.
 
+Ruby cuenta con funciones de alto orden, como _select_, _map_, _inject_, _any?_, _all?_, entre otras.
+
+En general,
+
 ``` ruby
 def keep_evens
   result_array = []
@@ -526,3 +530,87 @@ end
 ```
 
 También es mejor no usar _unless_ con _else_.
+
+
+
+#### El código debe contar una historia
+
+
+El código que se muestra a continuación, se encarga de recibir información de un usuario, e intentar encontrar un usuario con un token, o en caso de fallar,
+intentar encontrar el usuario a partir del email. O en caso de fallar revisar si el dominio del email es un dominio permitido, en cuyo caso crea el usuario.
+Caso contrario retorna false.
+
+``` ruby
+# Código original:
+
+def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
+    data = access_token.info
+    user = User.where(:provider => access_token.provider, :uid => access_token.uid ).first
+    if user
+      return user
+    else
+      registered_user = User.where(:email => access_token.info.email).first
+      if registered_user
+        return registered_user
+      else
+        users_allowed = %w(esteban.informatica@gmail.com)
+        domains_allowed = %w(snappler.com aerolaplata.com.ar aero.tur.ar)
+        domain = data["email"].split('@').last
+        if (users_allowed.include? data["email"]) or (domains_allowed.include? domain)
+          user = User.create(first_name: data["name"],
+            provider:access_token.provider,
+            email: data["email"],
+            uid: access_token.uid ,
+            password: Devise.friendly_token[0,20],
+            )
+        else
+          false
+        end
+      end
+    end
+  end
+
+# Ruby es muy expresivo, y si aprovechamos esto podemos escribir código
+# tal que podamos entender su funcionamiento con un simple vistazo:
+
+class OauthAutenticator
+
+  def call
+    find_by_oauth || find_by_email || create_user_if_allowed
+  end
+
+  def initialize(token)
+    @provider = token.provider
+    @uid      = token.uid
+    @email    = token.info.email
+    @name     = token.info.name
+  end
+
+  private
+
+  def find_by_oauth
+    User.find_by(provider: @provider, uid: @uid)
+  end
+
+  def find_by_email
+    User.find_by(email: @email)
+  end
+
+  def create_user_if_allowed
+    allowed_email? && User.create(
+      first_name: @name,
+      provider:   @provider,
+      email:      @email,
+      uid:        @uid,
+      password:   Devise.friendly_token[0,20]
+    )
+  end
+
+  def allowed_email?
+    allowed_users   = %w(esteban.informatica@gmail.com)
+    allowed_domains = %w(snappler.com aerolaplata.com.ar aero.tur.ar)
+    domain = @email.split('@').last
+    allowed_users.include?(@email) || allowed_domains.include?(domain)
+  end
+end
+```
