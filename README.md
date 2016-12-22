@@ -40,7 +40,8 @@ La consistencia dentro de un equipo de trabajo **mejora la comunicación** con n
 
 Además nos impulsa a escribir código **prolijo y fácil de mantener y compartir**.
 
-Una guía de estilos define entre otras cosas:
+
+##### Una guía de estilos define entre otras cosas:
 
 * Cómo y dónde usar comentarios
 * Cómo identar el código
@@ -52,11 +53,11 @@ Una guía de estilos define entre otras cosas:
 
 Nos basaremos en la [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
 
-Hay casos en los que no es posible seguir las recomendaciones de una guía de estilos.
 
-En esos casos es recomendado usar el criterio propio.
+##### Buenas lecturas:
 
-Particularmente, no destruyas compatibilidad de tu código sólo para adaptarte a esta guía.
+* [Why coding style matters?](https://www.smashingmagazine.com/2012/10/why-coding-style-matters/)
+* [Why use a style guide?](http://www.codereadability.com/why-use-a-style-guide/)
 
 
 -------------------------------
@@ -83,8 +84,11 @@ Ejemplo de un readme [aquí](EJEMPLO_README.md).
 
 ------------------------------
 
-
 # Tamaño y carga de la aplicación
+> No code runs faster than no code.
+> No code has fewer bugs than no code.
+> No code uses less memory than no code.
+> No code is easier to understand than no code.
 
 ## application.rb
 
