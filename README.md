@@ -6,12 +6,6 @@ Este documento pretende convertirse en un documento **colaborativo** donde:
 2. Acordemos una guía de estilos para escribir código de forma consistente
 3. Identifiquemos y describamos soluciones a _malos olores_ comunes en nuestro código
 
------------------------------
-
-# Indice
-
-* [Código limpio](#codigo-limpio)
-* [Guía de estilos](#guia-de-estilos)
 
 -----------------------------
 
@@ -212,6 +206,9 @@ resources :books do
 end
 ```
 
+**Nota:** usar _:only_ y _:except_ para generar sólo las rutas necesarias disminuye la memoria necesaria y aumenta la velocidad del proceso de ruteo.
+
+
 ## Route concerns
 
 Es común en aplicaciones rails tener archivos de rutas que repitan patrones para diferentes recursos.
@@ -280,9 +277,40 @@ Pero al mismo tiempo nos ayuda a tener un código con menos duplicación y mayor
 
 ------------------------------
 
+# Controladores
+
+Los controladores son los encargados de leer los datos de entrada (solicitud), elegir las acciones apropiadas y retornar una salida.
+
+Es una buena idea mantener a los controladores **simples**.
+
+Si encontramos lógica de negocio en los controladores estamos en presencia de un mal olor.
+
+Deberíamos transladar esta lógica al **modelo** o a **servicios**.
+
+#### Lógica que está bien en un controlador:
+
+* Lógica de sesión (autenticación, autorización, mensajes flash)
+* Seguridad contra ataques externos y protección de parámetros de entrada
+* Llamadas a métodos de modelos o servicios
+* Determinación de formato de respuesta
+* Ejecución de código de las vistas (render, redirect, etc)
+
+**Lectura interesante:** [7 design patterns to refactor MVC](https://www.sitepoint.com/7-design-patterns-to-refactor-mvc-components-in-rails/)
+
+------------------------------
+
 # Modelos
 
-TODO: explicacion modelos y qué va en los modelos.
+Active Record
+
+* Representa modelos y sus datos
+* Representa asociaciones entre estos modelos
+* Valida modelos antes de ser persistidos en la base de datos
+* Ejecuta operaciones en la base de datos en una forma orientada a objetos
+
+##### Malos olores:
+* Tener código de vistas en el modelo. Solución: transladar código a un helper, view object o presenter.
+
 
 ## Scopes
 
