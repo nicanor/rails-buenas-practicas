@@ -480,17 +480,28 @@ end
 
 #### Cuando usar keywords arguments
 
-Si una función tiene muchos parámetros, es mejor definirla con keywords arguments.
+Si una función tiene muchos parámetros, a veces es mejor definirla con keywords arguments.
 
 De esta forma, la función se vuelve mucho más expresiva y no es necesario recordar el orden de los parámetros.
 
 ``` ruby
-package_item = new_item(query[:site_id], query[:initial_date], query[:initial_date])
+# En lugar de:
+def travel_info(location_id, currency_id, departure, arrival)
+  #...
+end
 
-package_item = new_item(
+travel_info(query[:site_id], "USD", query[:initial_date], query[:end_date])
+
+# Usar:
+def travel_info(location_id:, currency_id:, departure:, arrival:)
+  #...
+end
+
+travel_info(
   location_id: query[:site_id],
-  date_in:     query[:date_in],
-  date_out:    query[:date_out]
+  currency: "USD"
+  departure: query[:initial_date],
+  arrival: query[:end_date]
 )
 ```
 
@@ -499,12 +510,14 @@ package_item = new_item(
 Los if son más fácil de leer cuando comienzan con la condición positiva.
 
 ``` ruby
+# En lugar de:
 if !valid?
   "There is an error"
 else
   "All ok"
 end
 
+# Usar:
 if valid?
   "All ok"
 else
