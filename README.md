@@ -414,6 +414,40 @@ Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-cal
 
 # Idiomas Ruby
 
+#### Pensar en Ruby: Método retorna algo vs es algo
+
+``` ruby
+# En lugar de:
+def word_count
+  return words.size
+end
+
+# Usar:
+def word_count
+  words.size
+end
+```
+
+#### Usar funciones de alto orden
+
+Ruby cuenta con funciones de alto orden, como _select_, _map_, _inject_, _any?_, _all?_, entre otras.
+
+``` ruby
+# En general, una estructura como la siguiente es un mal olor:
+def keep_evens
+  result_array = []
+  for num in my_array
+    result_array << num if num % 2 == 0
+  end
+  return result_array
+end
+
+# Lo mismo se puede escribir de una forma más simple, segura y expresiva:
+def keep_evens
+  my_array.select {|item| item.even?}
+end
+```
+
 #### Usar notación **&**
 
 ``` ruby
@@ -425,7 +459,8 @@ Más info [aquí](https://bibwild.wordpress.com/2013/12/19/you-never-want-to-cal
 
 Explicación [aquí](http://blog.thoughtfolder.com/2008-02-25-a-detailed-explanation-of-ruby-s-symbol-to-proc.html)
 
-#### Usar funciones específicas en colecciones
+
+#### Usar funciones específicas de colecciones
 
 ``` ruby
 # En lugar de:
@@ -449,38 +484,6 @@ Explicación [aquí](http://blog.thoughtfolder.com/2008-02-25-a-detailed-explana
 (1..10).find { |num| num % 3 == 0 }
 ```
 
-
-#### Pensar en Ruby: Método retorna algo vs es algo
-
-``` ruby
-def word_count
-  return words.size
-end
-
-def word_count
-  words.size
-end
-```
-
-#### Usar métodos funcionales para arreglos.
-
-Ruby cuenta con funciones de alto orden, como _select_, _map_, _inject_, _any?_, _all?_, entre otras.
-
-En general,
-
-``` ruby
-def keep_evens
-  result_array = []
-  for num in my_array
-    result_array << num if num % 2 == 0
-  end
-  return result_array
-end
-
-def keep_evens
-  my_array.select {|item| item.even?}
-end
-```
 
 #### Cuando usar keywords arguments
 
