@@ -11,12 +11,16 @@ Este documento pretende convertirse en un documento **colaborativo** donde:
 # Código limpio
 > Clean code always looks like it was written by someone who cares.
 
-0. Smaller code is better
-1. Reading your code should be pleasant
-2. Code should be easily extended by any other developer
-3. Code should have minimal dependencies
-5. Code should have unit and acceptance tests
-6. Code should be expressive
+##### Es deseable que el código de un programa:
+
+0. haga su trabajo
+1. sea corto y enfocado
+2. sea expresivo
+3. sea placentero para leer
+4. esté bien documentado
+5. sea fácilmente extendible por otro programador
+6. tenga dependencias mínimas
+7. tenga tests automáticos de unidad y aceptación
 
 
 -------------------------------
@@ -32,13 +36,15 @@ No sólo por otros miembros de tu equipo de trabajo en el presente, sino tambié
 
 Es importante que el código comunique su propósito al observador casual.
 
-Es por esto que es importante seguir una **guía de estilos**.
+Es por esto que es bueno seguir una **guía de estilos**.
 
 Una guía de estilos es acerca de **consistencia**.
 
 La consistencia dentro de un equipo de trabajo **mejora la comunicación** con nuestros compañeros.
 
 Además nos impulsa a escribir código **prolijo y fácil de mantener y compartir**.
+
+Seguir una guía de estilos nos ayuda a enfocarnos en lo importante.
 
 
 ##### Una guía de estilos define entre otras cosas:
@@ -51,10 +57,10 @@ Además nos impulsa a escribir código **prolijo y fácil de mantener y comparti
 * Buenos patrones e idiomas para usar
 * Patrones a evitar
 
-Nos basaremos en la [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
+Propuesta: [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
 
 
-##### Buenas lecturas:
+##### Lecturas interesantes:
 
 * [Why coding style matters?](https://www.smashingmagazine.com/2012/10/why-coding-style-matters/)
 * [Why use a style guide?](http://www.codereadability.com/why-use-a-style-guide/)
@@ -70,25 +76,23 @@ un desarrollador nuevo pueda comenzar a ser productivo cuanto antes.
 
 Tiene que estar escrito en [formato markdown de Github](https://guides.github.com/features/mastering-markdown/)
 
-Por lo menos tiene que contar con la siguiente información.
+##### Por lo menos tiene que contar con la siguiente información.
 
 1. En qué consiste la aplicación.
 2. Pasos a seguir para instalar y usar la aplicación.
 3. Estructura de la aplicación.
 4. Otras explicaciones que puedan ser de utilidad al nuevo desarrollador.
 
-Ejemplo de un readme [aquí](EJEMPLO_README.md).
+Lecturas interesantes:
 
-[Aspectos técnicos](https://jacobian.org/writing/technical-style/) de una buena documentación.
+* [Ejemplo de un readme](EJEMPLO_README.md).
+* [Writting great documentation](https://jacobian.org/writing/great-documentation/)
 
 
 ------------------------------
 
 # Tamaño y carga de la aplicación
-> No code runs faster than no code.
-> No code has fewer bugs than no code.
-> No code uses less memory than no code.
-> No code is easier to understand than no code.
+> No code runs faster than no code. No code has fewer bugs than no code. No code uses less memory than no code. No code is easier to understand than no code.
 
 ## application.rb
 
