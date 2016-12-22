@@ -8,13 +8,47 @@ Este documento pretende convertirse en un documento **colaborativo** donde:
 
 -----------------------------
 
-# Sobre la guía de estilos
+# Código limpio
+> Clean code always looks like it was written by someone who cares.
 
-El código es leido mucho más frecuentemente de lo que es escrito.
+0. Smaller code is better
+1. Reading your code should be pleasant
+2. Code should be easily extended by any other developer
+3. Code should have minimal dependencies
+5. Code should have unit and acceptance tests
+6. Code should be expressive
 
-Una guía de estilos es acerca de consistencia y prolijidad.
 
-Ser consistentes y prolijos nos permite escribir código fácil de mantener y de compartir entre nosotros.
+-------------------------------
+
+# Guía de estilos
+> Programs are meant to be read by humans and only incidentally for computers to execute.
+
+Debemos entender al código como una forma de comunicación con otros desarrolladores.
+
+El código está destinado a ser mantenido por otra persona.
+
+No sólo por otros miembros de tu equipo de trabajo en el presente, sino también con miembros de trabajo en el futuro.
+
+Es importante que el código comunique su propósito al observador casual.
+
+Es por esto que es importante seguir una **guía de estilos**.
+
+Una guía de estilos es acerca de **consistencia**.
+
+La consistencia dentro de un equipo de trabajo **mejora la comunicación** con nuestros compañeros.
+
+Además nos impulsa a escribir código **prolijo y fácil de mantener y compartir**.
+
+Una guía de estilos define entre otras cosas:
+
+* Cómo y dónde usar comentarios
+* Cómo identar el código
+* Uso apropiado de espacios en blanco
+* Nombramiento apropiado de variables y funciones
+* Cómo agrupar y organizar el código
+* Buenos patrones e idiomas para usar
+* Patrones a evitar
 
 Nos basaremos en la [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
 
@@ -28,6 +62,7 @@ Particularmente, no destruyas compatibilidad de tu código sólo para adaptarte 
 -------------------------------
 
 # Documentación
+> Documentation, when done successfully, can keep forward momentum in place and keep the team focused.
 
 El archivo **README.md** debe contener la información necesaria para que
 un desarrollador nuevo pueda comenzar a ser productivo cuanto antes.
