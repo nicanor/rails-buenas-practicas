@@ -8,6 +8,13 @@ Este documento pretende convertirse en un documento **colaborativo** donde:
 
 -----------------------------
 
+# Indice
+
+* [Código limpio](#codigo-limpio)
+* [Guía de estilos](#guia-de-estilos)
+
+-----------------------------
+
 # Código limpio
 > Clean code always looks like it was written by someone who cares.
 
