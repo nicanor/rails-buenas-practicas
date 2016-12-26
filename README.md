@@ -69,7 +69,7 @@ Propuesta: [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby
 
 -------------------------------
 
-# Documentación
+# Documentación externa
 > Documentation, when done successfully, can keep forward momentum in place and keep the team focused.
 
 El archivo **README.md** debe contener la información necesaria para que
@@ -84,10 +84,39 @@ Tiene que estar escrito en [formato markdown de Github](https://guides.github.co
 3. Estructura de la aplicación.
 4. Otras explicaciones que puedan ser de utilidad al nuevo desarrollador.
 
-Lecturas interesantes:
+##### Lecturas interesantes:
 
 * [Ejemplo de un readme](EJEMPLO_README.md).
 * [Writting great documentation](https://jacobian.org/writing/great-documentation/)
+
+-------------------------------
+
+# Documentación interna (comentarios)
+> Code can only tell you how the program works; comments can tell you why it works
+
+##### Puntos a tener en cuenta:
+
+* El código es más facil de escribir que de leer. Incluso el código propio suele ser dificil de leer luego de que no se lo mira por un tiempo
+* El software que no está internamente bien documentado suele ser descartado y reescrito luego de que la persona que lo escribió abandona la organización
+* Muchas veces es más difícil reusar software de otra persona que escribirlo uno mismo, por el hecho de no entender cómo funciona
+* En la práctica muchas veces el debbuging es en realidad intentar entender cómo funciona un programa
+
+El código por si mismo no puede explicar por qué el programa es escrito, o las razones por las que se elije un tipo de solución.
+
+Cuando el código no nos alcanza para dar las explicaciones necesarias a un nuevo programador, es buena idea comentar el código.
+
+Ruby es un lenguaje de programación muy expresivo.
+
+Si se aprovecha esta capacidad de expresión la necesidad de comentarios se ve reducida.
+
+Un comentario ocacional para clarificar está bien, pero si nos encontramos escribiendo frecuentemente código con partes complicadas y comentarios quizás llegó el momento de refactorizar.
+
+##### Puntos a tener en cuenta al comentar código
+
+* El mejor tipo de comentario es el que no necesitamos.
+* Los comentarios necesitan también mantenimiento. Si no se los mantiene adecuadamente, pueden ser confusos, obsoletos o peor, incorrectos.
+* Es mejor no incluir información redundante en los comentarios. Esto obliga al programador a cambiar los comentarios al modificar el código.
+* Es mejor mantener los comentarios cerca del código que referencian. Sino es posible que el programador olvide actualizar la documentación.
 
 
 ------------------------------
