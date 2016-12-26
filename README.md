@@ -121,6 +121,19 @@ Un comentario ocacional para clarificar está bien, pero si nos encontramos escr
 
 ------------------------------
 
+# Templates de aplicación
+> Don't repeat yourselves and focus on the important parts
+
+Los [templates de aplicación](http://guides.rubyonrails.org/rails_application_templates.html)
+son simples archivos Ruby conteniendo instrucciones para agregar gemas, initializers, etc.
+y sirven para crear aplicaciones Rails desde cero con configuraciones habituales.
+
+Si están bien usadas nos pueden ahorrar muchas horas de trabajo y además
+nos permiten concentrarnos en lo importante lo antes posible.
+
+Tenemos un [repo](http://gitlab.snappler.com/nica/rails-templates) para contribuir con estos templates y con instrucciones de cómo usarlos.
+
+
 # Tamaño y carga de la aplicación
 > No code runs faster than no code. No code has fewer bugs than no code. No code uses less memory than no code. No code is easier to understand than no code.
 
