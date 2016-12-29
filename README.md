@@ -60,6 +60,21 @@ Seguir una guía de estilos nos ayuda a enfocarnos en lo importante.
 
 Propuesta: [guía de estilos de Ruby de bbatsov](https://github.com/bbatsov/ruby-style-guide).
 
+##### Algunos puntos importantes de la guía propuesta:
+
+* Identar con 2 espacios  
+* Limitar lineas a 80 caractéres
+* Evita métodos mayores que 10 LOC (<5 en lo posible)
+* Evitar exceso de espacios al final
+* Terminar cada archivo con una linea nueva
+* **snake_case** para variables, métodos y símbolos
+* **CamelCase** para clases y módulos
+* **SCREAMING_SNAKE_CASE** para constantes
+* métodos que retornan valor lógico terminan en '?'. Ej: [].empty?
+* Escribe código en forma funcional, evitando mutación cuando eso tenga sentido.
+* Evita más de tres niveles de anidación de bloques
+* Se consistente
+* Usa el sentido común
 
 ##### Lecturas interesantes:
 
@@ -412,7 +427,11 @@ Debería ser:
 
 ------------------------------
 
-# Helpers y Views
+# Vistas
+
+Para las vistas, también es una buena idea ser prolijos y basarnos en una guía de estilos.
+
+Propuesta: [Guía HTML y CSS de MDO](http://codeguide.co/)
 
 ## Usar View Helper Methods
 
